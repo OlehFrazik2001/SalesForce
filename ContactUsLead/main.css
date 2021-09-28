@@ -1,0 +1,57 @@
+form, h1 {
+    width: 30%;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+
+input{
+    background: #ebebeb;
+    border: none;
+    border-radius: 2px;
+    padding: 5px;
+    width: 100%;
+    display: block;
+    
+}
+
+label{
+    display: block;
+    margin-bottom: 5px;
+}
+select {
+    background: #ebebeb;
+    border: none;
+    border-radius: 2px;
+    padding: 5px;
+    width: 100%;
+    display: block;
+
+}
+
+textarea {
+    background: #ebebeb;
+    border: none;
+    border-radius: 2px;
+    padding: 5px;
+    width: 100%;
+    display: block;
+    margin: 5px, 0, 100px;
+}
+
+.name {
+    display: flex;
+    justify-content: space-between;
+}
+
+.name input {
+    width: 100%;
+}
+
+#btn {
+    background-color: rgb(158, 111, 72);
+    padding: 20px;
+}
