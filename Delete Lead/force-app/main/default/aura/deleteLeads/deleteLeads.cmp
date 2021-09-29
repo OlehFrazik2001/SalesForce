@@ -1,0 +1,10 @@
+<aura:component implements="force:lightningQuickAction" controller="DeleteLeads"> 
+   <center><b>Do you really want to remove all the Lead records from the database? </b></center>
+   
+    <div style="display: flex; justify-content: space-between;">
+        <button onclick="{!c.showToastAfterConfirmation}" class="slds-button slds-button_brand">Ok!</button>
+        <button type="cancel" onclick="{!c.closeWindow}" class="slds-button slds-button_neutral">Cancel</button>
+   </div>
+</aura:component>
+ 
+ 
