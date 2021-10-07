@@ -1,0 +1,184 @@
+<apex:page renderAs="pdf" applyBodyTag="false" standardController="Contract">
+    <head>
+        <style type="text/css"> 
+            @page {
+                size: letter;
+                margin: 25mm;
+                @bottom-center {
+                    content: "Page " counter(page) " of " counter(pages);
+                }
+            }
+            .page-break {
+                display:block;
+                page-break-after:always;
+            }
+            body {
+                font-family: Arial Unicode MS;
+            }
+
+            .title {
+                margin: 300px, auto;
+                text-align: center;
+                font-size: 32px;
+            }
+
+            .gen_terms {
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="page-break">
+        <apex:panelGrid columns="2" width="100%">
+            <img src="{!$Resource.imageRedTagLogo}" height="100px"/>
+                <apex:panelGrid columns="1" width="100%">
+                    <apex:outputText 
+                    style="float:right"
+                    value='{!CASE(MONTH(DATEVALUE(NOW())),
+                        1, "January", 
+                        2, "February", 
+                        3, "March", 
+                        4, "April", 
+                        5, "May", 
+                        6, "June", 
+                        7, "July", 
+                        8, "August", 
+                        9, "September", 
+                        10, "October", 
+                        11, "November", 
+                        12, "December", 
+                        "None") 
+                        & " " 
+                        & TEXT(DAY(DATEVALUE(NOW()))) 
+                        & ", " 
+                        & TEXT(YEAR(DATEVALUE(NOW())))}'/>
+                </apex:panelGrid>           
+        </apex:panelGrid>
+        <div class="title">
+            <apex:outputText value="Contract between {!Contract.Account.Name} and {!Contract.CompanySigned.Name}."/>
+        </div> 
+    </div>
+    
+    
+    <div class="page-break">
+        <apex:panelGrid columns="2" width="100%">
+            <img src="{!$Resource.imageRedTagLogo}" height="100px"/>
+                <apex:panelGrid columns="1" width="100%">
+                    <apex:outputText 
+                    style="float:right"
+                    value='{!CASE(MONTH(DATEVALUE(NOW())),
+                        1, "January", 
+                        2, "February", 
+                        3, "March", 
+                        4, "April", 
+                        5, "May", 
+                        6, "June", 
+                        7, "July", 
+                        8, "August", 
+                        9, "September", 
+                        10, "October", 
+                        11, "November", 
+                        12, "December", 
+                        "None") 
+                        & " " 
+                        & TEXT(DAY(DATEVALUE(NOW()))) 
+                        & ", " 
+                        & TEXT(YEAR(DATEVALUE(NOW())))}'/>
+                </apex:panelGrid>           
+        </apex:panelGrid>
+        <div class="gen_terms">
+            <apex:outputText value="{!$Label.General_terms_and_condition}"/>
+        </div> 
+        <ol>
+            <li>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium minima consequatur quas quos, error iusto repellendus fugit quis ab quae dicta asperiores quidem hic! Alias odit sapiente, facere, blanditiis expedita excepturi distinctio aperiam exercitationem explicabo nobis quod, omnis voluptatum quisquam fugit ratione accusantium error sit vero reprehenderit adipisci quae? Deserunt doloremque impedit, temporibus minima ab eligendi quis et unde autem ipsam nesciunt nostrum aut, ad sit, quas delectus dicta optio veritatis est minus maiores! Consectetur, soluta aperiam! Officiis incidunt commodi maxime in, nihil omnis dolorum. Perferendis sequi, repudiandae et maxime temporibus quas voluptate nobis quia laboriosam sint ratione molestiae, quo error dignissimos? Minus veniam quia, nemo omnis similique reprehenderit tenetur sapiente est ipsum quod. Aut architecto rem quibusdam officiis voluptatibus enim vitae, at eaque ut aliquid nobis, nesciunt sit labore voluptatum quae minus laudantium libero, nostrum veritatis et mollitia quas quis! Debitis quia quod laudantium ipsam, quisquam veritatis molestias soluta eum cum provident atque! Dolor doloribus harum facilis quo. Facere fugit sunt perferendis unde est iure in nesciunt. Voluptatum vel harum necessitatibus ad sunt perferendis quaerat laudantium possimus, laboriosam fuga blanditiis excepturi, dolorum modi illo nostrum. Quaerat adipisci distinctio omnis temporibus rerum? Nesciunt sit consectetur eos! Temporibus fuga ad quidem.    
+            </li>   
+            <li>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Pariatur molestiae fuga sed facere omnis inventore ipsa ipsam a assumenda ad, ducimus nulla officiis asperiores non qui quis provident aspernatur odit fugiat eos ea libero suscipit! Culpa autem corporis deserunt exercitationem dolores aliquam iure quidem expedita sint commodi asperiores eveniet perspiciatis neque, libero assumenda dolore ad? Ad ratione, placeat ducimus accusamus, a voluptates rem id eligendi autem, nihil alias enim itaque. Totam aut veritatis doloribus labore explicabo ab neque quas, illum dolorum cupiditate aliquid ipsum quasi saepe eos vitae, ullam quod? Voluptate, labore numquam provident est sed ipsam velit doloremque ea?
+            </li> 
+            <li>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut ratione necessitatibus quasi recusandae veniam dolor adipisci nesciunt natus amet facilis quo aperiam explicabo sit autem, alias sint ipsa iste eveniet exercitationem eius quod itaque velit nihil atque! Corrupti, repudiandae amet dolores ea nam quis! Quo sit ratione amet ipsam in, ducimus incidunt ullam quod delectus earum enim, nulla voluptate perferendis voluptatum fugit voluptates saepe quidem cupiditate et asperiores! Recusandae tempore voluptas aut neque delectus? Repellendus, a maiores dolor in perspiciatis rem voluptatum hic voluptate beatae? Repudiandae, quam molestiae eaque quisquam iusto ab nobis ullam possimus quis voluptate quia consequuntur perferendis blanditiis est nam, dolorem sequi atque, rem odio voluptas labore. Ad nihil, dolor harum omnis natus perspiciatis quis, quod non sit maiores accusamus eius odit? Deleniti laudantium iusto distinctio deserunt aliquam! Autem tenetur doloremque debitis corporis cum iusto repellat eligendi, error aliquam veritatis ducimus deserunt sequi amet at possimus est?
+            </li>
+        </ol> 
+    </div>
+
+
+    <div>
+        <apex:panelGrid columns="2" width="100%">
+            <img src="{!$Resource.imageRedTagLogo}" height="100px"/>
+                <apex:panelGrid columns="1" width="100%">
+                    <apex:outputText 
+                    style="float:right"
+                    value='{!CASE(MONTH(DATEVALUE(NOW())),
+                        1, "January", 
+                        2, "February", 
+                        3, "March", 
+                        4, "April", 
+                        5, "May", 
+                        6, "June", 
+                        7, "July", 
+                        8, "August", 
+                        9, "September", 
+                        10, "October", 
+                        11, "November", 
+                        12, "December", 
+                        "None") 
+                        & " " 
+                        & TEXT(DAY(DATEVALUE(NOW()))) 
+                        & ", " 
+                        & TEXT(YEAR(DATEVALUE(NOW())))}'/>
+                </apex:panelGrid>           
+        </apex:panelGrid>
+
+        <div class="gen_terms">
+            <apex:outputText value="{!$Label.Subject_of_contract}" />
+        </div> 
+        <apex:pageBlock>
+            <apex:pageBlockTable value="{!Contract.Pricebook2}" var="book">
+                <apex:column value="{!book.Name}"/>
+                <!-- <apex:column value="{!book.MailingCity}"/> -->
+                <apex:column value="{!book.Description}"/>
+             </apex:pageBlockTable>
+        </apex:pageBlock>
+        
+
+        <div>
+            <apex:outputText value="{!$Label.Signature}" />         
+        </div>
+        <apex:panelGrid columns="2" width="100%">
+            <apex:panelGrid columns="1" width="100%">
+                <div>
+                    <apex:outputText value="____________________________"/>
+                </div>
+                <div>
+                    <apex:outputText value="____________________________"/>
+                </div>
+                <div>
+                    <apex:outputText value="____________________________"/>
+                </div>
+                <div>
+                    <apex:outputText value="{!Contract.Account.Name}"/>
+                </div>
+            </apex:panelGrid>  
+            <apex:panelGrid columns="1" width="100%">
+                <div>
+                    <apex:outputText value="____________________________"/>
+                </div>
+                <div>
+                    <apex:outputText value="____________________________"/>
+                </div>
+                <div>
+                    <apex:outputText value="____________________________"/>
+                </div>
+                <div>
+                    <apex:outputText value="{!Contract.CompanySigned.Name}"/>
+                </div>
+
+            </apex:panelGrid>    
+        </apex:panelGrid>
+        
+    </div>
+    </body>
+</apex:page>
