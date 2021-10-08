@@ -1,12 +1,41 @@
-<apex:page renderAs="pdf" applyBodyTag="false" standardController="Contract">
+<apex:page renderAs="pdf" applyBodyTag="false" standardController="Opportunity ">
     <head>
         <style type="text/css"> 
             @page {
                 size: letter;
                 margin: 25mm;
+                @top-left {
+                    content: element(header);
+                }
+            
+                @top-right {
+                    content: '{!CASE(MONTH(DATEVALUE(NOW())),
+                        1, "January", 
+                        2, "February", 
+                        3, "March", 
+                        4, "April", 
+                        5, "May", 
+                        6, "June", 
+                        7, "July", 
+                        8, "August", 
+                        9, "September", 
+                        10, "October", 
+                        11, "November", 
+                        12, "December", 
+                        "None") 
+                        & " " 
+                        & TEXT(DAY(DATEVALUE(NOW()))) 
+                        & ", " 
+                        & TEXT(YEAR(DATEVALUE(NOW())))}';
+                 }
+
                 @bottom-center {
                     content: "Page " counter(page) " of " counter(pages);
                 }
+            }
+            div.header {
+                padding: 10px;
+                position: running(header);
             }
             .page-break {
                 display:block;
@@ -17,7 +46,8 @@
             }
 
             .title {
-                margin: 300px, auto;
+                /* margin-top: 500px; */
+                padding-top: 300px; 
                 text-align: center;
                 font-size: 32px;
             }
@@ -27,67 +57,32 @@
                 font-weight: bold;
             }
 
+            .sig {
+                padding-top: 40px;
+            }
+            .inBorder{
+                padding: 5px;
+                border-top:1px solid rgb(0, 0, 0);
+                border-left:1px solid rgb(0, 0, 0);
+            }
+            .outBorder {
+                border:1px solid black;
+            }
         </style>
     </head>
     <body>
+        <div class="header">
+            <img src="{!$Resource.imageRedTagLogo}" height="100px"/> 
+         </div>
         <div class="page-break">
-        <apex:panelGrid columns="2" width="100%">
-            <img src="{!$Resource.imageRedTagLogo}" height="100px"/>
-                <apex:panelGrid columns="1" width="100%">
-                    <apex:outputText 
-                    style="float:right"
-                    value='{!CASE(MONTH(DATEVALUE(NOW())),
-                        1, "January", 
-                        2, "February", 
-                        3, "March", 
-                        4, "April", 
-                        5, "May", 
-                        6, "June", 
-                        7, "July", 
-                        8, "August", 
-                        9, "September", 
-                        10, "October", 
-                        11, "November", 
-                        12, "December", 
-                        "None") 
-                        & " " 
-                        & TEXT(DAY(DATEVALUE(NOW()))) 
-                        & ", " 
-                        & TEXT(YEAR(DATEVALUE(NOW())))}'/>
-                </apex:panelGrid>           
-        </apex:panelGrid>
+    
         <div class="title">
-            <apex:outputText value="Contract between {!Contract.Account.Name} and {!Contract.CompanySigned.Name}."/>
+            <apex:outputText value="Contract between {!Opportunity.Account.Name} and {!Opportunity.Owner.Name}."/>
         </div> 
     </div>
     
     
     <div class="page-break">
-        <apex:panelGrid columns="2" width="100%">
-            <img src="{!$Resource.imageRedTagLogo}" height="100px"/>
-                <apex:panelGrid columns="1" width="100%">
-                    <apex:outputText 
-                    style="float:right"
-                    value='{!CASE(MONTH(DATEVALUE(NOW())),
-                        1, "January", 
-                        2, "February", 
-                        3, "March", 
-                        4, "April", 
-                        5, "May", 
-                        6, "June", 
-                        7, "July", 
-                        8, "August", 
-                        9, "September", 
-                        10, "October", 
-                        11, "November", 
-                        12, "December", 
-                        "None") 
-                        & " " 
-                        & TEXT(DAY(DATEVALUE(NOW()))) 
-                        & ", " 
-                        & TEXT(YEAR(DATEVALUE(NOW())))}'/>
-                </apex:panelGrid>           
-        </apex:panelGrid>
         <div class="gen_terms">
             <apex:outputText value="{!$Label.General_terms_and_condition}"/>
         </div> 
@@ -106,45 +101,20 @@
 
 
     <div>
-        <apex:panelGrid columns="2" width="100%">
-            <img src="{!$Resource.imageRedTagLogo}" height="100px"/>
-                <apex:panelGrid columns="1" width="100%">
-                    <apex:outputText 
-                    style="float:right"
-                    value='{!CASE(MONTH(DATEVALUE(NOW())),
-                        1, "January", 
-                        2, "February", 
-                        3, "March", 
-                        4, "April", 
-                        5, "May", 
-                        6, "June", 
-                        7, "July", 
-                        8, "August", 
-                        9, "September", 
-                        10, "October", 
-                        11, "November", 
-                        12, "December", 
-                        "None") 
-                        & " " 
-                        & TEXT(DAY(DATEVALUE(NOW()))) 
-                        & ", " 
-                        & TEXT(YEAR(DATEVALUE(NOW())))}'/>
-                </apex:panelGrid>           
-        </apex:panelGrid>
-
         <div class="gen_terms">
             <apex:outputText value="{!$Label.Subject_of_contract}" />
         </div> 
         <apex:pageBlock>
-            <apex:pageBlockTable value="{!Contract.Pricebook2}" var="book">
-                <apex:column value="{!book.Name}"/>
-                <!-- <apex:column value="{!book.MailingCity}"/> -->
-                <apex:column value="{!book.Description}"/>
+            <apex:pageBlockTable styleclass="outBorder" value="{!opportunity.opportunityLineItems}" var="item">
+                <apex:column styleclass="inBorder" value="{!item.Name}"/>
+                <apex:column styleclass="inBorder" value="{!item.UnitPrice}"/>
+                <apex:column styleclass="inBorder" value="{!item.Quantity}"/>
+                <apex:column styleclass="inBorder" value="{!item.TotalPrice}"/>
              </apex:pageBlockTable>
         </apex:pageBlock>
         
 
-        <div>
+        <div class="gen_terms sig">
             <apex:outputText value="{!$Label.Signature}" />         
         </div>
         <apex:panelGrid columns="2" width="100%">
@@ -159,7 +129,7 @@
                     <apex:outputText value="____________________________"/>
                 </div>
                 <div>
-                    <apex:outputText value="{!Contract.Account.Name}"/>
+                    <apex:outputText value="{!Opportunity.Account.Name}"/>
                 </div>
             </apex:panelGrid>  
             <apex:panelGrid columns="1" width="100%">
@@ -173,7 +143,7 @@
                     <apex:outputText value="____________________________"/>
                 </div>
                 <div>
-                    <apex:outputText value="{!Contract.CompanySigned.Name}"/>
+                    <apex:outputText value="{!Opportunity.Owner.Name}"/>
                 </div>
 
             </apex:panelGrid>    
