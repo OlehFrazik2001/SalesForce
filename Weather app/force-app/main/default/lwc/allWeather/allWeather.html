@@ -1,0 +1,11 @@
+<template>
+    <div style="height: 500px;">
+    <template if:true={weatherList}>
+         <lightning-datatable
+                 key-field="id"
+                 data={weatherList}
+                 columns={columns}>
+         </lightning-datatable>
+    </template>
+    </div>
+</template>
