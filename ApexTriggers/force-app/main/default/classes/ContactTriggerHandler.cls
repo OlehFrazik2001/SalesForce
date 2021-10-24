@@ -1,27 +1,28 @@
 public class ContactTriggerHandler extends TriggerHandler {
+    public static Boolean isFirstTime = true;
+    public static Boolean runChangeAccount = false;
     
     public override void afterUpdate() {
-        updateContactPrimary(Trigger.new);
-        ContactPrimaryChangedToFalse(Trigger.new, Trigger.old);
-        PrimaryAndArchiveIsChecked(Trigger.new);
+        updateContactPrimary((List<Contact>)Trigger.new, (Map<Id, Contact>)Trigger.OldMap);
+        ContactPrimaryChangedToFalse(Trigger.new, (Map<Id, Contact>)Trigger.OldMap);
     }
 
     public override void afterInsert() {
-        updateContactPrimary(Trigger.new);
-        PrimaryAndArchiveIsChecked(Trigger.new);
-        
+        updateContactPrimary((List<Contact>)Trigger.new, null);  
     }
 
-    public override void beforeDelete() {
+    public override void afterDelete() {
         deletePrimary(Trigger.old);
     }
 
     public override void beforeInsert() {
         programContact((List<Contact>)Trigger.New, null);
+        PrimaryAndArchiveIsChecked(Trigger.new);
     }
 
     public override void beforeUpdate() {
         programContact((List<Contact>)Trigger.New, (Map<Id, Contact>)Trigger.OldMap);
+        PrimaryAndArchiveIsChecked(Trigger.new);
     }
 
     public static void programContact(List<Contact> triggerNew, Map<Id, Contact> oldMap){
@@ -41,115 +42,98 @@ public class ContactTriggerHandler extends TriggerHandler {
         }
     }
 
-    public static void updateContactPrimary(List<Contact> triggerNew){
-        String accId;
-        String conId;
+    public static void updateContactPrimary(List<Contact> triggerNew, Map<Id, Contact> oldMap){
+        Map<Id, Id> mapAccountIdContactId = new Map<Id, Id>();
+        Set<Id> contactIdSet = new Set<Id>(); 
         List<Contact> contacts = new List<Contact>();
-        
-        
-        for(Contact con : (List<Contact>) triggerNew) {
-          if(con.Primary__c == true) {
-            accId = con.AccountId;
-            conId = con.Id;
-          }
-        }
-        List<Contact> conList = [SELECT Id, Name, Primary__c FROM Contact WHERE AccountId = :accId];
-        for(Contact con : conList) {
-            if(con.Primary__c == true && con.Id != conId) {
-                con.Primary__c = false;
-                contacts.add(con);
+        List<Account> accounts = new List<Account>();
+        for(Contact con : (List<Contact>) triggerNew) { 
+            if(con.Primary__c == true && (oldMap == null || con.Primary__c != oldMap.get(con.Id).Primary__c) ) {
+                isFirstTime = false;
+                contactIdSet.add(con.Id);
+                mapAccountIdContactId.put(con.AccountId, con.Id);
             }
         }
-        updateAccountPrimaryContact(accId, conId);
+        
+        List<Account> accountList = [SELECT Id,  (SELECT Id FROM Contacts WHERE Primary__c = True AND Id IN :contactIdSet) FROM Account WHERE Id IN :mapAccountIdContactId.keyset()];
+        for( Account acc : accountList){
+            acc.Primary_Contact__c = mapAccountIdContactId.get(acc.Id);
+            accounts.add(acc);
+            for(Contact con : acc.Contacts) {
+                if(con.Id != acc.Primary_Contact__c) {
+                    con.Primary__c = false;
+                    contacts.add(con);
+                }
+            }   
+        }
+        update accounts;
         update contacts;
     }
 
-    public static void ContactPrimaryChangedToFalse(List<Contact> triggerNew, List<Contact> triggerOld) {
-        String accId;
-        String conId;
-        Map<Id, Contact> conmap = new Map<Id, Contact>(triggerOld);
-        for(Contact con: triggerNew) {
-            if (con.Primary__c != conmap.get(con.Id).Primary__c && con.Primary__c == false){
-                accId = con.AccountId;
-                conId = con.Id;
+    public static void ContactPrimaryChangedToFalse(List<Contact> triggerNew, Map<Id, Contact> oldMap) {
+        if(isFirstTime){
+            isFirstTime = false;
+            Map<Id, Id> mapAccountIdContactId = new Map<Id, Id>();
+            Set<Id> contactIdSet = new Set<Id>(); 
+            List<Contact> contacts = new List<Contact>();
+            List<Account> accounts = new List<Account>();
+            for(Contact con: triggerNew) {
+                if (con.Primary__c != oldMap.get(con.Id).Primary__c && con.Primary__c == false || runChangeAccount){
+                    contactIdSet.add(con.Id);
+                    mapAccountIdContactId.put(con.AccountId, con.Id);
+                }
             }
-        }
-        if(conId != null){
-            MakeAnotherPrimary(accId, conId);
-        }
-    }
-
-    public static void PrimaryAndArchiveIsChecked(List<Contact> triggerNew){
-        String accId;
-        String conId;
-        List<Contact> contacts = new List<Contact>();
-        for(Contact con: triggerNew) {
-            if (con.Primary__c == true && con.Archive__c == true){
-                Contact newCon = new Contact(Id=con.Id);
-                accId = con.AccountId;
-                conId = con.Id;
-                newCon.Primary__c = false;
-                contacts.add(newCon);
+            List<Account> accountList = [SELECT Id, (SELECT Id FROM Contacts WHERE Primary__c = False AND Archive__c = False AND Id NOT IN :contactIdSet) FROM Account WHERE Id IN :mapAccountIdContactId.keyset()];
+            for( Account acc : accountList){
+                for(Contact con : acc.Contacts) {
+                    con.Primary__c = true;
+                    contacts.add(con);
+                    acc.Primary_Contact__c = con.Id;
+                    accounts.add(acc);
+                    break;
+                }     
+                
             }
-        }
-        if (accId != null) {
-            MakeAnotherPrimary(accId, conId);
+            update accounts;
             update contacts;
         }
     }
 
+    public static void PrimaryAndArchiveIsChecked(List<Contact> triggerNew){
+        for(Contact con: triggerNew) {
+            if (con.Primary__c == true && con.Archive__c == true){
+                con.Primary__c = false;
+                isFirstTime = true;
+                runChangeAccount = true;
+            }
+        }
+    }
+
     public static void deletePrimary(List<Contact> triggerOld){
-        String accId;
-        String conId;
+        Set<Id> accountIdSet = new Set<Id>();
+        Set<Id> contactIdSet = new Set<Id>();
         List<Contact> contacts = new List<Contact>();
-        
-        for(Contact con : (List<Contact>) triggerOld) {
-          if(con.Primary__c == true) {
-            accId = con.AccountId;
-            conId = con.Id;
-          }
-        }
-        List<Contact> conList = [SELECT Id, Name, Primary__c FROM Contact WHERE AccountId = :accId AND Archive__c = FALSE AND Id != :conId];
-        for(Contact con : conList) {
-            if(con.Primary__c == false) {
-                con.Primary__c = true;
-                contacts.add(con);
-                break;
-            }
-        }
-        update contacts;
-        updateAccountPrimaryContact(accId, conId);
-       
-    }
-
-
-    public static void updateAccountPrimaryContact(String accId, String conId){
         List<Account> accounts = new List<Account>();
-        List<Account> accList = [SELECT Id, Primary_Contact__c FROM Account WHERE Id = :accId];
-        for(Account acc : accList) {
-            acc.Primary_Contact__c = conId;
-            accounts.add(acc);
-        }
-        update accounts;
-    }
-
-    
-
-    public static void MakeAnotherPrimary(String accId, String conId){
-        List<Contact> newCont = new List<Contact>();
-        List<Contact> conList = [SELECT Id, Name, Primary__c, Archive__c FROM Contact WHERE AccountId = :accId AND Archive__c = FALSE];
-        if(conList.size() != 0){
-            for(Contact con : conList) {
-                if(con.Id != conId) {
-                    con.Primary__c = true;
-                    conId = con.Id;
-                    newCont.add(con);
-                    break;
-                }
+        for(Contact con: triggerOld) {
+            if (con.Primary__c == true){
+                accountIdSet.add(con.AccountId);
+                contactIdSet.add(con.Id);
             }
-            update newCont;
-            updateAccountPrimaryContact(accId, conId);
-        }   
+        }
+        if (accountIdSet.size() != 0) {
+            List<Account> accountList = [SELECT Id, (SELECT Id FROM Contacts WHERE Primary__c = False AND Archive__c = False AND Id NOT IN :contactIdSet) FROM Account WHERE Id IN :accountIdSet];
+            for( Account acc : accountList){
+                for(Contact con : acc.Contacts) {
+                    con.Primary__c = true;
+                    contacts.add(con);
+                    acc.Primary_Contact__c = con.Id;
+                    accounts.add(acc);
+                    break;
+                }     
+                
+            }
+            update accounts;
+            update contacts;
+        }
     }
-    
 }
