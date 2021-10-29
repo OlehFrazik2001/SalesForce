@@ -55,7 +55,7 @@ public class ContactTriggerHandler extends TriggerHandler {
             }
         }
         
-        List<Account> accountList = [SELECT Id,  (SELECT Id FROM Contacts WHERE Primary__c = True AND Id IN :contactIdSet) FROM Account WHERE Id IN :mapAccountIdContactId.keyset()];
+        List<Account> accountList = [SELECT Id,  (SELECT Id FROM Contacts WHERE Primary__c = True) FROM Account WHERE Id IN :mapAccountIdContactId.keyset()];
         for( Account acc : accountList){
             acc.Primary_Contact__c = mapAccountIdContactId.get(acc.Id);
             accounts.add(acc);
