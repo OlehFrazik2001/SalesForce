@@ -1,26 +1,26 @@
 public class ProgramEnrollmentTriggerHandler extends TriggerHandler {
-    public override void afterUpdate() {
-        shareProgramEnrollment(Trigger.new, (Map<Id, Program_Enrollment__c>)Trigger.OldMap);
-    }
-
     public override void afterInsert() {
         shareProgramEnrollment(Trigger.new, null);
+    }
+
+    public override void afterUpdate() {
+        shareProgramEnrollment(Trigger.new, (Map<Id, Program_Enrollment__c>)Trigger.OldMap);
     }
 
     public static void shareProgramEnrollment(List<Program_Enrollment__c> triggerNew, Map<Id, Program_Enrollment__c> oldMap){
         List<Program_Enrollment__Share> progs = new List<Program_Enrollment__Share>();
         List<Group> OdesaDirectorGroup = [SELECT Id FROM Group WHERE Type = 'Role' AND DeveloperName = 'Odesa_Director'];
-        Id OdesaDirectorIdGroup = '';
+        Id OdesaDirectorIdGroup = null;
         if(OdesaDirectorGroup.size() != 0) {
             OdesaDirectorIdGroup = OdesaDirectorGroup[0].Id;
         }
         List<Group> KyivAndSubordinateDirectorGroup = [SELECT Id FROM Group WHERE Type = 'RoleAndSubordinates' AND DeveloperName = 'Kyiv_Director'];
-        Id KyivAndSubordinateDirectorIdGroup = '';
+        Id KyivAndSubordinateDirectorIdGroup = null;
         if(KyivAndSubordinateDirectorGroup.size() != 0) {
             KyivAndSubordinateDirectorIdGroup = KyivAndSubordinateDirectorGroup[0].Id;
         }
         List<Group> LvivAndSubordinateDirectorGroup = [SELECT Id FROM Group WHERE Type = 'RoleAndSubordinates' AND DeveloperName = 'Lviv_Director'];
-        Id LvivAndSubordinateDirectorIdGroup = '';
+        Id LvivAndSubordinateDirectorIdGroup = null;
         if(LvivAndSubordinateDirectorGroup.size() != 0) {
             LvivAndSubordinateDirectorIdGroup = LvivAndSubordinateDirectorGroup[0].Id;
         }
@@ -33,14 +33,15 @@ public class ProgramEnrollmentTriggerHandler extends TriggerHandler {
             LvivAndSubordinatesUsersSetId.add(u.Id);
         }
         for(Program_Enrollment__c p : triggerNew){            
-            if(p.city__c == 'Odesa' && OdesaDirectorIdGroup != '' && (oldMap == null || p.city__c != oldMap.get(p.Id).city__c)){
+            if(p.city__c == 'Odesa' && OdesaDirectorIdGroup != null && (oldMap == null || p.city__c != oldMap.get(p.Id).city__c)){
                 Program_Enrollment__Share prog = new Program_Enrollment__Share();
                 prog.ParentId = p.Id;
                 prog.UserOrGroupId = OdesaDirectorIdGroup;
                 prog.AccessLevel = 'edit';
                 prog.RowCause = Schema.Program_Enrollment__Share.RowCause.OdesaDirector__c;
                 progs.add(prog);
-            } else if(KyivAndSubordinatesUsersSetId.contains(p.Owner.Id) && KyivAndSubordinateDirectorIdGroup != '' && (oldMap == null || p.OwnerId != oldMap.get(p.Id).OwnerId)){
+            }
+            if(KyivAndSubordinatesUsersSetId.contains(p.Owner.Id) && KyivAndSubordinateDirectorIdGroup != null && (oldMap == null || p.OwnerId != oldMap.get(p.Id).OwnerId)){
                 Program_Enrollment__Share prog = new Program_Enrollment__Share();
                 prog.ParentId = p.Id;
                 prog.UserOrGroupId = KyivAndSubordinateDirectorIdGroup;
@@ -48,7 +49,8 @@ public class ProgramEnrollmentTriggerHandler extends TriggerHandler {
                 prog.RowCause = Schema.Program_Enrollment__Share.RowCause.KyivDirector__c;
                 progs.add(prog);
             }
-            else if(LvivAndSubordinatesUsersSetId.contains(p.Owner.Id)  && LvivAndSubordinateDirectorIdGroup != '' && (oldMap == null || p.OwnerId != oldMap.get(p.Id).OwnerId)){
+            
+            if(LvivAndSubordinatesUsersSetId.contains(p.Owner.Id)  && LvivAndSubordinateDirectorIdGroup != null && (oldMap == null || p.OwnerId != oldMap.get(p.Id).OwnerId)){
                 Program_Enrollment__Share prog = new Program_Enrollment__Share();
                 prog.ParentId = p.Id;
                 prog.UserOrGroupId = LvivAndSubordinateDirectorIdGroup;
@@ -57,6 +59,6 @@ public class ProgramEnrollmentTriggerHandler extends TriggerHandler {
                 progs.add(prog);
             }
         } 
-        Database.SaveResult[] jprogShareInsertResult = Database.insert(progs,false);
+        Database.SaveResult[] progShareInsertResult = Database.insert(progs,false);
     }
 }
