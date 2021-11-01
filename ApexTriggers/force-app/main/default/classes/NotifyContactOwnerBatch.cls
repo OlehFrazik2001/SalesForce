@@ -1,13 +1,13 @@
 public class NotifyContactOwnerBatch implements Database.Batchable<sObject> {
     
     public Database.QueryLocator start(Database.BatchableContext BC){
-       return Database.getQueryLocator('SELECT Id, Owner.ID, Birthdate, Name FROM Contact');
+       return Database.getQueryLocator('SELECT Id, Owner.ID, Birthdate, Age__c, Name FROM Contact WHERE Birthdate = NEXT_90_DAYS AND Age__c = 17');
     }
  
     public void execute(Database.BatchableContext BC, List<Contact> scope){
         Map<Id, List<Contact>> mapOwnerContact = new Map<Id, List<Contact>>();
         for (Contact con : scope) {
-            if (con.Birthdate != null && Date.Today().addDays(90) == con.Birthdate && (Date.Today().addDays(90).year() - con.Birthdate.year()) == 18) {
+            if (Date.Today().addDays(90) == con.Birthdate) {
                 if (mapOwnerContact.containsKey(con.Owner.Id)) {
                     mapOwnerContact.get(con.Owner.Id).add(con);
                 } else {
@@ -18,7 +18,7 @@ public class NotifyContactOwnerBatch implements Database.Batchable<sObject> {
         List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();
         List<User> users = [SELECT Id, Email FROM User WHERE Id IN :mapOwnerContact.keySet()];
         for (User u : users) {
-            String[] toAddresses = new String[] {u.Email};
+            List<String> toAddresses = new List<String>{u.Email};
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
             
             String body = 'Here is a list of contacts turning 18 in 3 month:<br>';
