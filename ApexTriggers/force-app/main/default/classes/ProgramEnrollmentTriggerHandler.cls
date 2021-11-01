@@ -41,7 +41,7 @@ public class ProgramEnrollmentTriggerHandler extends TriggerHandler {
                 prog.RowCause = Schema.Program_Enrollment__Share.RowCause.OdesaDirector__c;
                 progs.add(prog);
             }
-            if(KyivAndSubordinatesUsersSetId.contains(p.Owner.Id) && KyivAndSubordinateDirectorIdGroup != null && (oldMap == null || p.OwnerId != oldMap.get(p.Id).OwnerId)){
+            if(KyivAndSubordinatesUsersSetId.contains(p.OwnerId) && KyivAndSubordinateDirectorIdGroup != null && (oldMap == null || p.OwnerId != oldMap.get(p.Id).OwnerId)){
                 Program_Enrollment__Share prog = new Program_Enrollment__Share();
                 prog.ParentId = p.Id;
                 prog.UserOrGroupId = KyivAndSubordinateDirectorIdGroup;
@@ -49,8 +49,7 @@ public class ProgramEnrollmentTriggerHandler extends TriggerHandler {
                 prog.RowCause = Schema.Program_Enrollment__Share.RowCause.KyivDirector__c;
                 progs.add(prog);
             }
-            
-            if(LvivAndSubordinatesUsersSetId.contains(p.Owner.Id)  && LvivAndSubordinateDirectorIdGroup != null && (oldMap == null || p.OwnerId != oldMap.get(p.Id).OwnerId)){
+            if(LvivAndSubordinatesUsersSetId.contains(p.OwnerId) && LvivAndSubordinateDirectorIdGroup != null && (oldMap == null || p.OwnerId != oldMap.get(p.Id).OwnerId)){
                 Program_Enrollment__Share prog = new Program_Enrollment__Share();
                 prog.ParentId = p.Id;
                 prog.UserOrGroupId = LvivAndSubordinateDirectorIdGroup;
