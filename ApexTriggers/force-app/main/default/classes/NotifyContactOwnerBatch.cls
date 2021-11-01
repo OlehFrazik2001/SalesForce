@@ -7,7 +7,7 @@ public class NotifyContactOwnerBatch implements Database.Batchable<sObject> {
     public void execute(Database.BatchableContext BC, List<Contact> scope){
         Map<Id, List<Contact>> mapOwnerContact = new Map<Id, List<Contact>>();
         for (Contact con : scope) {
-            if (Date.Today().addDays(90) == con.Birthdate) {
+            if (Date.newInstance(Date.Today().addDays(90).year() - 18, Date.Today().addDays(90).month(), Date.Today().addDays(90).day()) == con.Birthdate) {
                 if (mapOwnerContact.containsKey(con.Owner.Id)) {
                     mapOwnerContact.get(con.Owner.Id).add(con);
                 } else {
