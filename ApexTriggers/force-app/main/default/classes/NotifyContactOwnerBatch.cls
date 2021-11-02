@@ -1,10 +1,10 @@
-public class NotifyContactOwnerBatch implements Database.Batchable<sObject> {
-    
-    public Database.QueryLocator start(Database.BatchableContext BC){
+global class NotifyContactOwnerBatch implements Database.Batchable<SObject> {
+    @TestVisible static Integer emailLimits;
+    global Database.QueryLocator start(Database.BatchableContext BC) {
        return Database.getQueryLocator('SELECT Id, Owner.ID, Birthdate, Age__c, Name FROM Contact WHERE Birthdate = NEXT_90_DAYS AND Age__c = 17');
     }
  
-    public void execute(Database.BatchableContext BC, List<Contact> scope){
+    global void execute(Database.BatchableContext BC, List<Contact> scope){
         Map<Id, List<Contact>> mapOwnerContact = new Map<Id, List<Contact>>();
         for (Contact con : scope) {
             if (Date.newInstance(Date.Today().addDays(90).year() - 18, Date.Today().addDays(90).month(), Date.Today().addDays(90).day()) == con.Birthdate) {
@@ -31,8 +31,10 @@ public class NotifyContactOwnerBatch implements Database.Batchable<sObject> {
             mails.add(mail);
         }
         Messaging.sendEmail(mails);
+        List<Messaging.SendEmailResult> results = Messaging.sendEmail(mails);
+        emailLimits = Limits.getEmailInvocations();
     }
 
-    public void finish(Database.BatchableContext BC){
+    global void finish(Database.BatchableContext BC){
     }
 }
