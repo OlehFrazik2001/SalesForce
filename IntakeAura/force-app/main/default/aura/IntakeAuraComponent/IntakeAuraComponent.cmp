@@ -1,0 +1,33 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId">
+    <aura:attribute name="selectedLookUpRecord" type="String" />   
+    <aura:attribute name="selectedRecordId" type="String" />
+    <aura:handler name="change" value="{!v.selectedLookUpRecord}" action="{!c.selectedLookupChanged}"/> 
+    <div class="slds-box slds-theme_shade">
+        <c:CustomLook  selectedRecord="{!v.selectedLookUpRecord}" objectName="Intake__c" fieldName="Name" label="Intake Name" iconName="standard:account" placeholder="Enter Value" />
+        
+        <aura:if isTrue="{!v.selectedLookUpRecord}">
+                <lightning:recordEditForm recordId="{!v.selectedRecordId}" objectApiName="Intake__c" onsuccess="{!c.handleSuccessUpdate}" onerror="{!c.handleErrorUpdate}">
+                    <lightning:inputField aura:id="intakeName" fieldName="Name"/>
+                    <lightning:inputField aura:id="field" fieldName="Active__c" />
+                    <lightning:inputField aura:id="field" fieldName="Contact__c" />
+                    <div class="slds-m-top_medium">
+                        <lightning:button type="submit" label="Save Record" />
+                    </div>
+                </lightning:recordEditForm>
+        </aura:if>
+    </div>
+    <div class="slds-box slds-theme_shade">
+            <lightning:recordEditForm objectApiName="Intake__c" onsuccess="{!c.handleSuccessCreate}" onerror="{!c.handleErrorCreate}">
+                <lightning:inputField aura:id="intakeName" fieldName="Name"/>
+                <lightning:inputField aura:id="field" fieldName="Active__c" />
+                <lightning:inputField aura:id="field" fieldName="Contact__c" />
+                <div class="slds-m-top_medium">
+                    <lightning:button type="submit" label="Create Record" />
+                </div>
+            </lightning:recordEditForm>
+        
+    </div>
+
+   
+
+</aura:component>	
