@@ -1,3 +1,12 @@
-<design:component >
+<design:component>
+    <design:attribute name="buttonLabel" label="Button CTA" />
+    <design:attribute name="activeField" label="Active Field" />
+    <design:attribute name="nameField" label="Name Field" />
+    <design:attribute name="intakeDateField" label="Intake Date Field" />
+    <design:attribute name="cityField" label="City Field" />
+    <design:attribute name="contactField" label="Contact Field"/>
+    <design:attribute name="servicesDesiredField" label="Services Desired Field" />
+    <design:attribute name="availableField" label="Available for Services Field" />
+    <design:attribute name="lastServiceField" label="Last Service Date Field" />
 
 </design:component>

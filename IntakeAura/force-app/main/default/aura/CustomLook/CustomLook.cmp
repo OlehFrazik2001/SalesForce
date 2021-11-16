@@ -1,5 +1,5 @@
 <aura:component controller="CustomLookupController" >
- 
+        
     <aura:attribute name="objectName" type="string" default="" required="true" />
     <aura:attribute name="fieldName" type="string" default="" required="true" />
     <aura:attribute name="value" type="String" default="" description="To pre-populate a value" />

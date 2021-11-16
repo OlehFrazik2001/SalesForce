@@ -2,14 +2,51 @@
     <aura:attribute name="selectedLookUpRecord" type="String" />   
     <aura:attribute name="selectedRecordId" type="String" />
     <aura:handler name="change" value="{!v.selectedLookUpRecord}" action="{!c.selectedLookupChanged}"/> 
+
+    <aura:attribute name="buttonLabel" type="Boolean"/>
+
+    <aura:attribute name="activeField" type="Boolean" />
+    <aura:attribute name="nameField" type="Boolean" />
+    <aura:attribute name="intakeDateField" type="Boolean" />
+    <aura:attribute name="cityField" type="Boolean" />
+    <aura:attribute name="contactField" type="Boolean" />
+    <aura:attribute name="servicesDesiredField" type="Boolean" />
+    <aura:attribute name="availableField" type="Boolean" />
+    <aura:attribute name="lastServiceField" type="Boolean" />
+
+
+                    
+
+
     <div class="slds-box slds-theme_shade">
         <c:CustomLook  selectedRecord="{!v.selectedLookUpRecord}" objectName="Intake__c" fieldName="Name" label="Intake Name" iconName="standard:account" placeholder="Enter Value" />
         
         <aura:if isTrue="{!v.selectedLookUpRecord}">
                 <lightning:recordEditForm recordId="{!v.selectedRecordId}" objectApiName="Intake__c" onsuccess="{!c.handleSuccessUpdate}" onerror="{!c.handleErrorUpdate}">
-                    <lightning:inputField aura:id="intakeName" fieldName="Name"/>
-                    <lightning:inputField aura:id="field" fieldName="Active__c" />
-                    <lightning:inputField aura:id="field" fieldName="Contact__c" />
+                    <aura:if isTrue="{!v.nameField}">
+                        <lightning:inputField aura:id="intakeName" fieldName="Name"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.activeField}">
+                        <lightning:inputField aura:id="field" fieldName="Active__c" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.contactField}">
+                        <lightning:inputField aura:id="field" fieldName="Contact__c" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.intakeDateField}">
+                        <lightning:inputField aura:id="intakeName" fieldName="Intake_Date__c"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.cityField}">
+                        <lightning:inputField aura:id="intakeName" fieldName="City__c"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.servicesDesiredField}">
+                        <lightning:inputField aura:id="intakeName" fieldName="Services_Desired__c"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.availableField}">
+                        <lightning:inputField aura:id="intakeName" fieldName="Available_for_Services__c"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.lastServiceField}">
+                        <lightning:inputField aura:id="intakeName" fieldName="Last_Service_Date__c"/>
+                    </aura:if>
                     <div class="slds-m-top_medium">
                         <lightning:button type="submit" label="Save Record" />
                     </div>
@@ -18,14 +55,34 @@
     </div>
     <div class="slds-box slds-theme_shade">
             <lightning:recordEditForm objectApiName="Intake__c" onsuccess="{!c.handleSuccessCreate}" onerror="{!c.handleErrorCreate}">
-                <lightning:inputField aura:id="intakeName" fieldName="Name"/>
-                <lightning:inputField aura:id="field" fieldName="Active__c" />
-                <lightning:inputField aura:id="field" fieldName="Contact__c" />
+                <aura:if isTrue="{!v.nameField}">
+                    <lightning:inputField aura:id="intakeName" fieldName="Name"/>
+                </aura:if>
+                <aura:if isTrue="{!v.activeField}">
+                    <lightning:inputField aura:id="field" fieldName="Active__c" />
+                </aura:if>
+                <aura:if isTrue="{!v.contactField}">
+                    <lightning:inputField aura:id="field" fieldName="Contact__c" />
+                </aura:if>
+                <aura:if isTrue="{!v.intakeDateField}">
+                    <lightning:inputField aura:id="intakeName" fieldName="Intake_Date__c"/>
+                </aura:if>
+                <aura:if isTrue="{!v.cityField}">
+                    <lightning:inputField aura:id="intakeName" fieldName="City__c"/>
+                </aura:if>
+                <aura:if isTrue="{!v.servicesDesiredField}">
+                    <lightning:inputField aura:id="intakeName" fieldName="Services_Desired__c"/>
+                </aura:if>
+                <aura:if isTrue="{!v.availableField}">
+                    <lightning:inputField aura:id="intakeName" fieldName="Available_for_Services__c"/>
+                </aura:if>
+                <aura:if isTrue="{!v.lastServiceField}">
+                    <lightning:inputField aura:id="intakeName" fieldName="Last_Service_Date__c"/>
+                </aura:if>
                 <div class="slds-m-top_medium">
                     <lightning:button type="submit" label="Create Record" />
                 </div>
             </lightning:recordEditForm>
-        
     </div>
 
    
