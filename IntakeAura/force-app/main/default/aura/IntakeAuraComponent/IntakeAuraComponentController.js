@@ -1,4 +1,18 @@
 ({
+    doInit : function(component, event, helper) {
+        var fields = [];
+       
+        var fl = component.get("v.fields").replace(/\s+/g, '');
+        console.log('1', fl);
+        fl = fl.split(",");
+
+        fl.forEach(function(f) {
+            fields.push(f);
+        });
+        console.log(fields);
+        component.set("v.fieldsDisplay", fl);
+    },
+
     selectedLookupChanged:function(component, event, helper) { 
         var recordId = component.get("v.selectedLookUpRecord").value;
         component.set("v.selectedRecordId", recordId);

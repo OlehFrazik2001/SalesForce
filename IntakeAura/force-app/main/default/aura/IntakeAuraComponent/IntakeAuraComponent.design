@@ -8,5 +8,5 @@
     <design:attribute name="servicesDesiredField" label="Services Desired Field" />
     <design:attribute name="availableField" label="Available for Services Field" />
     <design:attribute name="lastServiceField" label="Last Service Date Field" />
-
+    <design:attribute name="fields" label="Fields" />
 </design:component>
