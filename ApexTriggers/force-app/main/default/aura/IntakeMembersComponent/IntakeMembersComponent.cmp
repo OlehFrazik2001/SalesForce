@@ -1,0 +1,21 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId" controller="GetIntakeMembers">
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="errors" type="Object" default="[]"/>
+    <aura:attribute name="draftValues" type="Object" default="[]"/>
+    <aura:attribute name="recordId" type="Id" />
+
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
+        <lightning:datatable aura:id="dtTable"
+                             columns="{!v.columns }"
+                             data="{!v.data }"
+                             keyField="Id"
+                             errors="{!v.errors }"
+                             draftValues="{!v.draftValues }"
+                             onsave="{!c.handleSaveEdition }"
+                             />
+   
+    
+    
+</aura:component>
