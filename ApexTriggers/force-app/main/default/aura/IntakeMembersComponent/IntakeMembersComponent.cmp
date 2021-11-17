@@ -1,9 +1,9 @@
 <aura:component implements="force:lightningQuickAction,force:hasRecordId" controller="GetIntakeMembers">
-    <aura:attribute name="data" type="Object"/>
-    <aura:attribute name="columns" type="List"/>
-    <aura:attribute name="errors" type="Object" default="[]"/>
-    <aura:attribute name="draftValues" type="Object" default="[]"/>
-    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="data" type="Object" access="private"/>
+    <aura:attribute name="columns" type="List" access="private"/>
+    <aura:attribute name="errors" type="Object" default="[]" access="private"/>
+    <aura:attribute name="draftValues" type="Object" default="[]" access="private"/>
+    <aura:attribute name="recordId" type="Id" access="private"/>
 
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
     
