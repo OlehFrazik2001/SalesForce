@@ -1,0 +1,13 @@
+<apex:page controller="ServicesController" docType="html-5.0">
+    <apex:form>
+        <p>Select Record Type</p>
+
+        <apex:selectList size="1" value="{!option}">
+            <apex:selectOptions value="{!options}"/>
+        </apex:selectList>
+        <p>Select Data Range</p> 
+        <apex:input type="date" value="{!startDate}"/>
+        <apex:input type="date" value="{!endDate}"/>
+        <apex:commandButton value="Next" action="{!next}"/>
+    </apex:form>
+</apex:page>

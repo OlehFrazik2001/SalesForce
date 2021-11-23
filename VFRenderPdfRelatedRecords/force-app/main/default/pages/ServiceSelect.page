@@ -1,0 +1,10 @@
+<apex:page renderAs="pdf" controller="ServicesController">
+    <apex:detail relatedList="false">
+        <apex:pageBlock>
+            <apex:pageBlockTable value="{!services}" var="service">
+                <apex:column value="{!service.Name}"/>
+                <apex:column value="{!service.Service_Date__c}"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:detail>
+</apex:page>
