@@ -8,16 +8,17 @@ public class ServicesController {
     public date startDateNew;
     public date endDateNew;
     public List<Service__c> getServices() {
-        startDate = apexpages.currentpage().getparameters().get('startDate');
-        endDate = apexpages.currentpage().getparameters().get('endDate');
-        recordTypeId  = ApexPages.CurrentPage().getparameters().get('recordTypeId');
-        if (startDate!='') {
-            startDateNew = date.parse(startDate);
+        if (apexpages.currentpage().getparameters().get('endDate') != null || apexpages.currentpage().getparameters().get('startDate') != null) {
+            startDate = apexpages.currentpage().getparameters().get('startDate');
+            endDate = apexpages.currentpage().getparameters().get('endDate');
+            recordTypeId  = ApexPages.CurrentPage().getparameters().get('recordTypeId');
+            if (startDate != '') {
+                startDateNew = date.valueOf(startDate);
+            }
+            if (endDate != '') {
+                endDateNew = date.valueOf(endDate);
+            }
         }
-        if (endDate!='') {
-            endDateNew = date.parse(endDate);
-        }
-
         return [SELECT Id, Name, RecordTypeId, Service_Date__c, Contact__c FROM Service__c WHERE RecordTypeId = :recordTypeId AND Service_Date__c >= :startDateNew AND Service_Date__c <= :endDateNew AND Contact__c = :currentRecordId];
     }
 
@@ -25,7 +26,6 @@ public class ServicesController {
     	PageReference pg = new PageReference('/apex/ServiceSelect');
         pg.getparameters().put('startDate', startDate);
         pg.getparameters().put('endDate', endDate);
-
         pg.getparameters().put('recordId', currentRecordId);
         pg.getparameters().put('recordTypeId', recordTypeId);
         pg.setRedirect(true);
