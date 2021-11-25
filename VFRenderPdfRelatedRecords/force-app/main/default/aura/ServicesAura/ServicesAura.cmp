@@ -1,0 +1,15 @@
+<aura:component controller="ServiceAuraController" implements="flexipage:availableForAllPageTypes,force:lightningQuickAction">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>   
+    <aura:attribute name="recordTypeList" type="List" />
+    <aura:attribute name="startDate" type="Date" />
+    <aura:attribute name="endDate" type="Date" />
+    <aura:attribute name="recordTypeName" type="String" />
+    <lightning:select name="select" label="Choose a record type" value="{!v.recordTypeName}">
+        <aura:iteration items="{!v.recordTypeList}" var="recordType" >
+                <option text="{!recordType.Name}"></option>
+            </aura:iteration>
+    </lightning:select>
+    <lightning:input type="date" name="startDate" label="Enter a start date" value="{!v.startDate}"/>
+    <lightning:input type="date" name="endDate" label="Enter a end date" value="{!v.endDate}"/>
+    <lightning:button label="Generate" variant="brand" onclick="{!c.handleOpenInNewWindow}"/>
+</aura:component>	
