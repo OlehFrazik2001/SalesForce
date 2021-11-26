@@ -1,15 +1,18 @@
-<aura:component controller="ServiceAuraController" implements="flexipage:availableForAllPageTypes,force:lightningQuickAction">
+<aura:component controller="ServiceAuraController" implements="flexipage:availableForAllPageTypes,force:lightningQuickAction,force:hasRecordId">
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>   
+    <aura:attribute name="recordId" type="String" />
     <aura:attribute name="recordTypeList" type="List" />
-    <aura:attribute name="startDate" type="Date" />
-    <aura:attribute name="endDate" type="Date" />
-    <aura:attribute name="recordTypeName" type="String" />
+    <aura:attribute name="startDate" type="Date"/>
+    <aura:attribute name="endDate" type="Date"/>
+    <aura:attribute name="recordTypeName" type="String" default="Clinical Note"/>
     <lightning:select name="select" label="Choose a record type" value="{!v.recordTypeName}">
-        <aura:iteration items="{!v.recordTypeList}" var="recordType" >
+        <aura:iteration items="{!v.recordTypeList}" var="recordType">
                 <option text="{!recordType.Name}"></option>
             </aura:iteration>
     </lightning:select>
-    <lightning:input type="date" name="startDate" label="Enter a start date" value="{!v.startDate}"/>
-    <lightning:input type="date" name="endDate" label="Enter a end date" value="{!v.endDate}"/>
-    <lightning:button label="Generate" variant="brand" onclick="{!c.handleOpenInNewWindow}"/>
+    <lightning:input type="date" name="startDate" label="Enter start date" value="{!v.startDate}"/>
+    <lightning:input type="date" name="endDate" label="Enter end date" value="{!v.endDate}"/>
+    <div class="slds-align_absolute-center" style="height:5rem">
+        <lightning:button label="Generate" variant="brand" onclick="{!c.handleOpen}"/>
+    </div>
 </aura:component>	

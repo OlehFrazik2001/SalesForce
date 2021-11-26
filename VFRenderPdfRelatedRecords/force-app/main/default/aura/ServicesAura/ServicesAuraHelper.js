@@ -3,10 +3,8 @@
 		var action = component.get('c.servicesRecordTypeList');
         action.setCallback(this, function(response){
             var state = response.getState();      
-            //alert('state ' + state);
             if(state == "SUCCESS"){
-                var result = response.getReturnValue();
-                //alert('result ' + JSON.stringify(result));                
+                var result = response.getReturnValue();              
                 component.set('v.recordTypeList',result);
             }
         });
