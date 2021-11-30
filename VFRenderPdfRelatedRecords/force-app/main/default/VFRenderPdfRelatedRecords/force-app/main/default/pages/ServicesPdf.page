@@ -1,0 +1,36 @@
+<apex:page controller="ServicesController" docType="html-5.0" standardStylesheets="false">
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mg-top-40 {
+            margin-top: 40px;
+        }
+    
+        .mg-top-60 {
+            margin-top: 60px;
+        }
+    </style>
+    <apex:form>
+        <p class="center">Select Record Type</p>
+        <div class="center">
+            <apex:selectList size="1" value="{!recordTypeId}">
+                <apex:selectOptions value="{!recordsTypeId}"/>
+            </apex:selectList>
+        </div>
+        <p class="center  mg-top-40">Select Data Range</p>
+        <div class="center">
+            Since: <apex:input type="date" value="{!startDate}"/>
+        </div> 
+        <div class="center mg-top-40">
+            To: <apex:input type="date" value="{!endDate}"/>
+        </div> 
+        <div class="center mg-top-60">
+            <apex:commandButton value="Next" action="{!next}"/>
+        </div>
+       
+    </apex:form>
+</apex:page>
