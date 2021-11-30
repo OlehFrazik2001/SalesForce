@@ -7,7 +7,7 @@
     <aura:attribute name="recordTypeName" type="String" default="Clinical Note"/>
     <lightning:select name="select" label="Choose a record type" value="{!v.recordTypeName}">
         <aura:iteration items="{!v.recordTypeList}" var="recordType">
-                <option text="{!recordType.Name}"></option>
+                <option text="{!recordType.Name}" value="{!recordType.Id}"></option>
             </aura:iteration>
     </lightning:select>
     <lightning:input type="date" name="startDate" label="Enter start date" value="{!v.startDate}"/>

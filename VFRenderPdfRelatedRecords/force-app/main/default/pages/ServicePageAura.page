@@ -7,7 +7,9 @@
             }
         </style>
     </head>
-    <apex:repeat value="{!services}" var="service">
+    <!-- Iterate through all services -->
+    <apex:repeat value="{!services}" var="service"> 
+        <!-- Show info about service -->
         <apex:detail subject="{!service.Id}" relatedList="false" />
     </apex:repeat>
 </apex:page>

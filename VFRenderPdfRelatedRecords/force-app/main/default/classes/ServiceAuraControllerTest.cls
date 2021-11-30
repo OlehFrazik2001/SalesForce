@@ -23,7 +23,7 @@ public class ServiceAuraControllerTest {
         apexpages.currentpage().getparameters().put('startdate', string.valueOf(Date.Today().addDays(-1)));
         apexpages.currentpage().getparameters().put('enddate', string.valueOf(Date.Today().addDays(1)));
         apexpages.currentpage().getparameters().put('currentRecordId', con.Id);
-        apexpages.currentpage().getparameters().put('currentTypeName', 'Clinical_Note');
+        apexpages.currentpage().getparameters().put('currentTypeName', recordTypeId);
         System.assertEquals(2, ServiceAuraController.getServices().size(), 'Two services are selected');
         
     }
